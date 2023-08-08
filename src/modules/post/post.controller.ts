@@ -5,7 +5,7 @@ import axios from 'axios';
 import { PostDTO } from 'src/model/entities/post.dto';
 import { PostService } from 'src/model/services/post.service';
 
-@Controller('post')
+@Controller('api')
 export class PostController {
     constructor(
         private config: ConfigService,
@@ -13,8 +13,9 @@ export class PostController {
 
     ) { }
 
-    @Patch('/post')
+    @Post('/post')
     async updatePost(@Body() postDTO: PostDTO): Promise<any> {
+        console.log("we are here")
         return await this.postService.updatePost(postDTO)
     }
 
