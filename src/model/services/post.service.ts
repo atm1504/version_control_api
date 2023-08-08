@@ -47,6 +47,7 @@ export class PostService {
             let logResp = await this.changesRepository.findOne({ where: { postId: body.id } })
 
             let changeLog;
+            let n = 0;
 
             if (!logResp) {
                 logResp = new Changes()
@@ -55,19 +56,23 @@ export class PostService {
                 changeLog = []
             } else {
                 changeLog = JSON.parse(logResp.changes)
+                console.log(changeLog)
+                n = changeLog.length
             }
 
             if (changes.length == 0) {
                 changeLog.push({
+                    id: n + 1,
                     timestamp: new Date(),
-                    changes: ["Post has been creates"],
+                    changes: ["Post has been created"],
                     username: body.username
                 })
             } else {
                 changeLog.push({
                     timestamp: new Date(),
                     changes: changes,
-                    username: body.username
+                    username: body.username,
+                    id: n + 1
                 })
             }
 
@@ -89,7 +94,7 @@ export class PostService {
 
     async getChangeLog() {
         const data = await this.changesRepository.findOne({ where: { postId: 1 } })
-        data.changes = JSON.parse(data.changes)
+        data.changes = (JSON.parse(data.changes)).reverse()
         return data
     }
 
